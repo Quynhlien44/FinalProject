@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AppdevGB_e2301477</title>
+    <script>
+        function getdata(){
+            fetch('https://www.cc.puv.fi/~e2301482/mydata.txt')
+            .then(r => r.text()).then(data => dispdata(data));
+        }
+        function dispdata(d){
+            var lines = d.split("\n");
+            var ctt = document.getElementById("data");
+            ctt.innerHTML = d;
+        }
+        
+    </script>
+</head>
+<body>
+    <button type="button" onclick="getdata()">Show TXT</button>
+    <p id="data"></p>
+</body>
+</html>
