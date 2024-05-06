@@ -1,0 +1,69 @@
+<!doctype html>
+<html>
+<head>
+    <title>APPDEV Final</title>
+    <script>
+        function loadtxt() {
+            fetch('http://www.cc.puv.fi/~e2301477/mydata.txt')
+                .then(r => r.text()).then(data => dispdata(data));
+        }
+        function dispdata(d) {
+            var ctt = document.getElementById("data");
+            var can = document.getElementById("chart");
+            var ctx = can.getContext("2d");
+            ctx.lineWidth = 10;
+
+            var h = can.height;
+
+            //ctt.innerHTML = d;
+            var lines = d.split("\n"); 
+            var i = 0;
+
+            ctx.font = "50px Arial";
+            ctx.fillStyle = "orange"
+            ctx.fillText("My barchart", can.width / 2 - 125, 10 + 50);
+            
+
+            while (typeof lines[0] !== 'undefined') {
+                var curline = lines.shift();
+
+                //ctt.innerHTML += curline + "<br/>"; //show data
+
+                var splitted = curline.split(' ');
+                var max = parseInt(splitted[2]), min = parseInt(splitted[3]);
+
+                if (max < min) {
+                    var temp = min;
+                    min = max;
+                    max = temp;
+                }
+
+                ctx.strokeStyle = '#FF0000';    // min value in red color
+                ctx.beginPath();
+                ctx.moveTo(i * 30 + 10, h/2);
+                ctx.lineTo(i * 30 + 10, -min * 3 + h / 2);
+                ctx.stroke();
+
+                ctx.strokeStyle = '#000FF9';    // max value in blue color
+                ctx.beginPath();
+                ctx.moveTo(i * 30 + 20, h / 2);
+                ctx.lineTo(i * 30 + 20, -max * 3 + h / 2);
+                ctx.stroke();
+
+                ctx.font = "12px Arial";    //index per bar
+                ctx.fillStyle = 'black';
+                if(min>0) ctx.fillText(min, i * 30+2, (-min-3) * 3 + h /2 );
+                else ctx.fillText(min, i * 30+2, (-min+5) * 3 + h /2 );
+                if(max>0) ctx.fillText(max, i * 30 + 14, (-max-3) * 3 + h / 2);
+                else ctx.fillText(max, i * 30 + 14, (-max+5) * 3 + h / 2);
+
+                i = i + 1;
+            }
+        }
+    </script>
+</head>
+<body onload="loadtxt()">
+    <p id="data"></p>
+    <canvas id="chart" height="500" width="1500" style="border:solid 2px blue"></canvas>
+</body>
+</html>
